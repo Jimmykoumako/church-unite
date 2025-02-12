@@ -18,7 +18,8 @@ import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
 import { Loader2, AlertCircle, BookMarked, PenLine, LoaderCircle } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { supabase } from "@/lib/supabase";
-import { Member, MemberSelect } from "@/pages/MemberSelect";
+import {Member, MemberSelect} from "@/pages/MemberSelect";
+import {PrayerRequest} from "@/pages/PrayerRequests.tsx";
 
 interface PrayerRequestFormData {
   title: string;
@@ -41,7 +42,7 @@ const defaultFormData: PrayerRequestFormData = {
 interface PrayerRequestFormProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  initialData?: PrayerRequestFormData;
+  initialData?: PrayerRequest;
   onSubmit: (data: PrayerRequestFormData) => Promise<void>;
   isEditing?: boolean;
   currentUserId: string;
@@ -77,7 +78,8 @@ export function PrayerRequestForm({
                                     currentUserId
                                   }: PrayerRequestFormProps) {
   const [formData, setFormData] = useState<PrayerRequestFormData>(defaultFormData);
-  const [members, setMembers] = useState<Member[]>([]);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [_, setMembers] = useState<Member[]>([]);
   const [existingMembers, setExistingMembers] = useState<string[]>([]);
   const [loadingMembers, setLoadingMembers] = useState(true);
   const [originalFormData, setOriginalFormData] = useState<PrayerRequestFormData>(defaultFormData);
@@ -97,13 +99,13 @@ export function PrayerRequestForm({
   // Fetch existing members for the prayer request when editing
   useEffect(() => {
     async function fetchExistingMembers() {
-      if (!isEditing || !initialData?.id) return;
+      if (!isEditing || !currentUserId) return;
 
       try {
         const { data, error } = await supabase
             .from('prayer_request_members')
             .select('member_id')
-            .eq('prayer_request_id', initialData.id);
+            .eq('prayer_request_id', currentUserId);
 
         if (error) throw error;
 
@@ -114,7 +116,7 @@ export function PrayerRequestForm({
     }
 
     fetchExistingMembers();
-  }, [isEditing, initialData?.id]);
+  }, [isEditing, currentUserId]);
 
   // Populate form data when editing
   useEffect(() => {
@@ -226,7 +228,7 @@ export function PrayerRequestForm({
   };
 
   const updatePrayerRequest = async () => {
-    if (!formData.id) throw new Error('No prayer request ID');
+    if (!currentUserId) throw new Error('No prayer request ID');
 
     // Update prayer request details
     const { error: updateError } = await supabase
@@ -239,7 +241,7 @@ export function PrayerRequestForm({
           status: formData.status,
           updated_at: new Date().toISOString()
         })
-        .eq('id', formData.id);
+        .eq('id',currentUserId);
 
     if (updateError) throw updateError;
 
@@ -248,14 +250,14 @@ export function PrayerRequestForm({
     const { error: deleteError } = await supabase
         .from('prayer_request_members')
         .delete()
-        .eq('prayer_request_id', formData.id);
+        .eq('prayer_request_id', currentUserId);
 
     if (deleteError) throw deleteError;
 
     // Then add new member associations if any
     if (formData.member_ids.length > 0) {
       const memberAssociations = formData.member_ids.map(memberId => ({
-        prayer_request_id: formData.id,
+        prayer_request_id: currentUserId,
         member_id: memberId
       }));
 

@@ -17,8 +17,8 @@ import { UserPlus, UserCog, Loader2, AlertCircle } from "lucide-react";
 interface MemberFormProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  onSubmit: (data: any) => Promise<void>;
-  initialData?: any;
+  onSubmit: (data: unknown) => Promise<void>;
+  initialData?: unknown;
   isEditing?: boolean;
 }
 

@@ -44,7 +44,7 @@ export default function Signup() {
       setLoading(true);
       await signUp(formData);
       navigate('/');
-    } catch (err: any) {
+    } catch (err: unknown) {
       setError(err.message || 'Failed to create an account');
     } finally {
       setLoading(false);

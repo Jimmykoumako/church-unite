@@ -37,7 +37,7 @@ export default function ForgotPassword() {
       if (resetError) throw resetError;
       
       setEmailSent(true);
-    } catch (err: any) {
+    } catch (err: unknown) {
       setError(err.message || 'Failed to send reset email');
       console.error(err);
     } finally {

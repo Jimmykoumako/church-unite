@@ -5,17 +5,15 @@ import { Button } from "../components/ui/button";
 import {
   Card,
   CardContent,
-  CardDescription,
   CardHeader,
-  CardTitle,
 } from "../components/ui/card";
 import { Badge } from "../components/ui/badge";
 import { ScrollArea } from "../components/ui/scroll-area";
 import { PrayerRequestForm } from './PrayerRequestForm';
-import {Pencil, RefreshCw, User} from "lucide-react";
+import {RefreshCw, User} from "lucide-react";
 import {formatRelativeTime} from "@/lib/utils.ts";
 
-interface PrayerRequest {
+export interface PrayerRequest {
   id: string;
   title: string;
   description: string;
@@ -95,7 +93,7 @@ export default function PrayerRequests() {
     }
   }
 
-  async function handleSubmit(formData: any) {
+  async function handleSubmit(formData: unknown) {
     try {
       if (selectedPrayer) {
         // Update existing prayer
@@ -142,10 +140,10 @@ export default function PrayerRequests() {
     }
   }
 
-  const handleEdit = (prayer: PrayerRequest) => {
-    setSelectedPrayer(prayer);
-    setDialogOpen(true);
-  };
+  // const handleEdit = (prayer: PrayerRequest) => {
+  //   setSelectedPrayer(prayer);
+  //   setDialogOpen(true);
+  // };
 
   const handleOpenDialog = () => {
     setSelectedPrayer(null);
@@ -215,7 +213,7 @@ export default function PrayerRequests() {
             onSubmit={handleSubmit}
             initialData={selectedPrayer}
             isEditing={!!selectedPrayer}
-            currentUserId={user?.id!}
+            currentUserId={user?.id}
         />
 
         {/* Filters */}

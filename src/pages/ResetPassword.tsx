@@ -57,7 +57,7 @@ export default function ResetPassword() {
       navigate('/login', { 
         state: { message: 'Password updated successfully. Please log in with your new password.' }
       });
-    } catch (err: any) {
+    } catch (err: unknown) {
       setError(err.message || 'Failed to update password');
       console.error(err);
     } finally {
