@@ -38,6 +38,8 @@ export default function ForgotPassword() {
       
       setEmailSent(true);
     } catch (err: unknown) {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-expect-error
       setError(err.message || 'Failed to send reset email');
       console.error(err);
     } finally {

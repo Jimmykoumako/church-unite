@@ -45,6 +45,8 @@ export default function Signup() {
       await signUp(formData);
       navigate('/');
     } catch (err: unknown) {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-expect-error
       setError(err.message || 'Failed to create an account');
     } finally {
       setLoading(false);

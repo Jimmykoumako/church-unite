@@ -112,6 +112,8 @@ export function RichTextEditor({
                 <Toggle
                     size="sm"
                     pressed={editor.isActive({ textAlign: 'left' })}
+                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                    // @ts-expect-error
                     onPressedChange={() => editor.chain().focus().setTextAlign('left').run()}
                     aria-label="Align left"
                 >

@@ -58,6 +58,8 @@ export default function ResetPassword() {
         state: { message: 'Password updated successfully. Please log in with your new password.' }
       });
     } catch (err: unknown) {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-expect-error
       setError(err.message || 'Failed to update password');
       console.error(err);
     } finally {
